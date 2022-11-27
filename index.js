@@ -22,17 +22,27 @@ async function run(){
     const usersCollection = client.db('bikeParadise').collection('users');
     const categoryCollection = client.db('bikeParadise').collection('productCategories')
 
-    app.get('/products', async(req,res) =>{
-    const query = {};
-    const products = await productCollection.find(query).toArray();
-    res.send(products); 
+    app.get('/category/:id', async(req,res) =>{
+        const id = req.params.id;
+        const query = { categoryId: id };
+        const selectedCategory = await categoryCollection.findOne(query);
+        const productQuery = {category: selectedCategory.category};
+        const products = await productCollection.find(productQuery).toArray();
+        res.send(products);
     });
-    
+
     app.get('/categories', async(req,res) =>{
     const query = {};
     const categories = await categoryCollection.find(query).toArray();
     res.send(categories); 
     });
+
+    // app.get('/services/:id', async (req, res) => {
+    //     const id = req.params.id;
+    //     const query = { _id: ObjectId(id) };
+    //     const service = await serviceCollection.findOne(query);
+    //     res.send(service);
+    // });
 
     app.get('/jwt', async(req, res) =>{
         const email = req.query.email;
