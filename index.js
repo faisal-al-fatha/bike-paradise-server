@@ -19,12 +19,19 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run(){
     try{
     const productCollection = client.db('bikeParadise').collection('products');
-    const usersCollection = client.db('bikeParadise').collection('users')
+    const usersCollection = client.db('bikeParadise').collection('users');
+    const categoryCollection = client.db('bikeParadise').collection('productCategories')
 
     app.get('/products', async(req,res) =>{
     const query = {};
     const products = await productCollection.find(query).toArray();
     res.send(products); 
+    });
+    
+    app.get('/categories', async(req,res) =>{
+    const query = {};
+    const categories = await categoryCollection.find(query).toArray();
+    res.send(categories); 
     });
 
     app.get('/jwt', async(req, res) =>{
@@ -56,6 +63,14 @@ async function run(){
             res.send(result);
         }
         res.send({})
+    });
+
+    app.post('/products', async(req, res)=> {
+            const product = req.body;
+            console.log(product);
+            const result = await productCollection.insertOne(product);
+            res.send(result);
+       
     });
 
     }
