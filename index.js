@@ -113,6 +113,20 @@ async function run(){
         res.send(result);
     });
 
+    app.delete('/users/delete/:id', async(req, res) =>{
+        // const decodedEmail = req.decoded.email;
+        // const query = {email: decodedEmail};
+        // const user = await usersCollection.findOne(query);
+
+        // if(user?.role !== 'Admin'){
+        //     return res.status(403).send({message: 'forbidden access'})
+        // }
+        const id = req.params.id;
+        const filter = { _id: ObjectId(id)};
+        const result = await usersCollection.deleteOne(filter);
+        res.send(result);
+    })
+
     
 
     app.post('/users', async(req, res)=> {
@@ -125,7 +139,7 @@ async function run(){
             const result = await usersCollection.insertOne(user);
             res.send(result);
         }
-        res.send({})
+        return
     });
 
     app.post('/products', async(req, res)=> {
