@@ -20,7 +20,9 @@ async function run(){
     try{
     const productCollection = client.db('bikeParadise').collection('products');
     const usersCollection = client.db('bikeParadise').collection('users');
-    const categoryCollection = client.db('bikeParadise').collection('productCategories')
+    const categoryCollection = client.db('bikeParadise').collection('productCategories');
+    const bookingCollection = client.db('bikeParadise').collection('bookings');
+
 
     app.get('/category/:id', async(req,res) =>{
         const id = req.params.id;
@@ -79,6 +81,13 @@ async function run(){
             const product = req.body;
             console.log(product);
             const result = await productCollection.insertOne(product);
+            res.send(result);
+       
+    });
+    app.post('/bookings', async(req, res)=> {
+            const booking = req.body;
+            console.log(booking);
+            const result = await bookingCollection.insertOne(booking);
             res.send(result);
        
     });
