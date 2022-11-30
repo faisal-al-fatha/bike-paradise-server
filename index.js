@@ -126,7 +126,6 @@ async function run(){
         const result = await usersCollection.deleteOne(filter);
         res.send(result);
     })
-
     
 
     app.post('/users', async(req, res)=> {
@@ -142,6 +141,17 @@ async function run(){
         return
     });
 
+    app.get('/products', verifyJWT, async(req, res)=> {
+        const decodedEmail = req.decoded.email;
+        const email = req.query.email;
+        if(email !== decodedEmail){
+            return res.status(403).send({message:'forbidden access'})
+        }
+        const query = {sellerEmail: email};
+        const products = await productCollection.find(query).toArray();
+        res.send(products);
+    })
+
     app.post('/products', async(req, res)=> {
             const product = req.body;
             console.log(product);
@@ -149,6 +159,16 @@ async function run(){
             res.send(result);
        
     });
+
+    app.delete('/products/delete/:id', async(req, res) =>{
+       
+        const id = req.params.id;
+        const filter = { _id: ObjectId(id)};
+        const result = await productCollection.deleteOne(filter);
+        console.log(result);
+        res.send(result);
+    })
+
     app.get('/bookings', verifyJWT, async(req, res)=> {
         const decodedEmail = req.decoded.email;
         const email = req.query.email;
@@ -159,6 +179,7 @@ async function run(){
         const bookings = await bookingCollection.find(query).toArray();
         res.send(bookings);
     })
+
     app.post('/bookings', async(req, res)=> {
         const email = req.query.email;
         const query = {email: email};
@@ -169,6 +190,16 @@ async function run(){
             res.send(result);
        
     });
+
+    app.delete('/bookings/delete/:id', async(req, res) =>{
+       
+        const id = req.params.id;
+        const filter = { _id: ObjectId(id)};
+        const result = await bookingCollection.deleteOne(filter);
+        console.log(result);
+        res.send(result);
+    })
+
 
     }
     finally{
