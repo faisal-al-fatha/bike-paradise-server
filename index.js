@@ -190,6 +190,20 @@ async function run(){
             res.send(result);
        
     });
+    app.put('/bookings/buy/:id', async(req,res) =>{
+        const id = req.params.id;
+        const filter = { _id: ObjectId(id)};
+        const option = {upsert: true}
+        const updatedDoc = {
+            $set: {
+                status: 'sold'
+            }
+        }
+        const result = await bookingCollection.updateOne(filter, updatedDoc, option);
+
+        const product = 
+        res.send(result);
+    });
 
     app.delete('/bookings/delete/:id', async(req, res) =>{
        
