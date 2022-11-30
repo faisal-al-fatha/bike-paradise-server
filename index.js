@@ -201,7 +201,9 @@ async function run(){
         }
         const result = await bookingCollection.updateOne(filter, updatedDoc, option);
 
-        const product = 
+        // const booking = await bookingCollection.findOne(filter);
+        // const filter2 = {_id: booking.productId }
+        // const result2 = await productCollection.updateOne(filter2, updatedDoc, option)
         res.send(result);
     });
 
